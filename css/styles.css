@@ -5,8 +5,8 @@ body {
 
 #list_of_comics {
 	background-color : #F3D403;
+	border : 1px solid black;
+	text-align : center;
 }
 
-#form {
-	border : 1 px solid black;
-}
+
