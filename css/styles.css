@@ -1,0 +1,12 @@
+body {
+	background-color : #CC4224;
+	text-align : center;
+} 
+
+#list_of_comics {
+	background-color : #F3D403;
+}
+
+#form {
+	border : 1 px solid black;
+}

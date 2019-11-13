@@ -7,15 +7,17 @@
 
 	<!-- The following script is used for generating hash -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-	<h1> Comics by Marvel Characters </h1>
 
-	<form id="comic_search" method="GET">
-		<label for="character">Chracter Name : <input id="character" type="text" name="character"> 
+		<h1> Comics by Marvel Characters </h1>
+	<div id="form">
+		<form id="comic_search" method="GET">
+			<label for="character">Chracter Name : <input id="character" type="text" name="character"> </label>
 			<input type="submit" value="Submit">
-	</form>
-
+		</form>
+	</div>
 	<div id="list_of_comics">
 
 		<ul id="series-list">
