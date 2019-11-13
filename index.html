@@ -17,9 +17,7 @@
 	</form>
 
 	<div id="list_of_comics">
-		<ul>
-			
-		</ul>
+		<p id="charInfo"></p>
 	</div>
 
 	<script>
@@ -29,47 +27,69 @@
 		const url ="https://gateway.marvel.com:443/v1/public/characters?"
 		var ts = Date.now();
 		var hash = CryptoJS.MD5(ts + private_key + public_key).toString();
+
+		let charList = [];  // Array of all characters
 		
+
+
 		$("#character").on("change", function() {
 			var characterName = $("#character").val();
 			console.log(characterName);
+			allChar(); // Fills in the charList array
+
+			for (let i = 0; i < charList.length; i++)
+			{	
+				if(charList[i].name == characterName)
+				{
+					$("#charInfo").html("Name : " + charList[i].name + "\n");
+
+					for (let j=0; j < charList[i].series.items.length; j++){
+						$("#charInfo").append("Series : " + charList[i].series.items[j].name + "\n");
+					}
+										
+				}
+			} 
 
 			var endpoint = url + "name=" + characterName + "&ts=" + ts + "&apikey=" + public_key + "&hash=" + hash;
 
 			console.log(endpoint);
 
-			allChar();
+			
 
-			console.log("-----------------------------------");
-			$.ajax({
-				url : endpoint,
-				dataType : "json",
-				success : function (result, status){
-					var data = result.data.results;
-
-					console.log(data);
-	
-					
-					//$("#list_of_comics ul").append(result);
-				}
-			})
+			console.log("*********************** List of all Characters ***********************")
+			for(let j=0; j < charList.length; j++)
+			{
+				console.log(charList[j]);
+			}
 		})
 
 		function allChar() {
-			$.ajax({
-				url : "https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash + "&limit=100",
-				dataType : "json",
-				success : function (result, status){
-					console.log("https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash);
-					var characterList = result.data.results;
+			let offset = 0;
+			const limit = 100;
+			let count = 1;
 
-					characterList.forEach(function(char){
-						console.log(char.name);
-					})
-				}
+			for(let i=0; i < 15; i++)
+			{
+				$.ajax({
+					url : "https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash + "&limit=" + limit + "&offset=" + offset,
+					dataType : "json",
+					success : function (result, status){
+						console.log("https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash);
 
-			})
-			console.log("ALL CHARACTERS");
+						var characterList = result.data.results;
+						console.log(characterList);
+
+					// Pushing each character name into the charList array
+						characterList.forEach(function(char){
+						charList.push(char);
+						//console.log(count + " : " + char.name);
+						count += 1;
+						})
+							
+					}
+				})
+				offset = offset + 100;
+			}
 		}
 
 				
