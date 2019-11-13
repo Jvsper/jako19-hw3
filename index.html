@@ -12,12 +12,15 @@
 	<h1> Comics by Marvel Characters </h1>
 
 	<form id="comic_search" method="GET">
-		<label for="chracter">Chracter Name : <input id="character" type="text" name="character"> 
+		<label for="character">Chracter Name : <input id="character" type="text" name="character"> 
 			<input type="submit" value="Submit">
 	</form>
 
 	<div id="list_of_comics">
-		<p id="charInfo"></p>
+
+		<ul id="series-list">
+			
+		</ul>
 	</div>
 
 	<script>
@@ -28,71 +31,45 @@
 		var ts = Date.now();
 		var hash = CryptoJS.MD5(ts + private_key + public_key).toString();
 
-		let charList = [];  // Array of all characters
-		
-
-
+	// When changing character input
 		$("#character").on("change", function() {
-			var characterName = $("#character").val();
+			var characterName = $("#character").val().toLowerCase().replace(/\s/g,'');
 			console.log(characterName);
-			allChar(); // Fills in the charList array
 
-			for (let i = 0; i < charList.length; i++)
-			{	
-				if(charList[i].name == characterName)
-				{
-					$("#charInfo").html("Name : " + charList[i].name + "\n");
+			$("#list_of_comics").html("<h3> List of series related to this character </h3>");
+			$("#list_of_comics").append("<h4>Character Name : " + characterName + "</h4>\n\n");
 
-					for (let j=0; j < charList[i].series.items.length; j++){
-						$("#charInfo").append("Series : " + charList[i].series.items[j].name + "\n");
-					}
-										
-				}
-			} 
+			$.ajax({
+				url : "https://gateway.marvel.com:443/v1/public/characters?name=" + characterName + "&ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash,// + "&limit=" + limit + "&offset=" + offset,
+				dataType : "json",
+				success : function(result, status){
 
-			var endpoint = url + "name=" + characterName + "&ts=" + ts + "&apikey=" + public_key + "&hash=" + hash;
+					var charID = result.data.results[0].id
 
-			console.log(endpoint);
+					console.log(charID);
 
-			
+					var offset = 0;
+					for(var j = 0; j < 10; j++)
+					{
+						$.ajax({
+							url : "https://gateway.marvel.com:443/v1/public/characters/"+charID+"/series?&limit=100&offset=" + offset + "&ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash,
+							dataType : "json",
+							success : function(result, status){
+								var seriesInfo = result.data.results
 
-			console.log("*********************** List of all Characters ***********************")
-			for(let j=0; j < charList.length; j++)
-			{
-				console.log(charList[j]);
-			}
-		})
-
-		function allChar() {
-			let offset = 0;
-			const limit = 100;
-			let count = 1;
-
-			for(let i=0; i < 15; i++)
-			{
-				$.ajax({
-					url : "https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash + "&limit=" + limit + "&offset=" + offset,
-					dataType : "json",
-					success : function (result, status){
-						console.log("https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash);
-
-						var characterList = result.data.results;
-						console.log(characterList);
-
-					// Pushing each character name into the charList array
-						characterList.forEach(function(char){
-						charList.push(char);
-						//console.log(count + " : " + char.name);
-						count += 1;
+								for (let i = 0; i < seriesInfo.length; i++)
+								{
+									console.log(seriesInfo[i].title)
+									$("#list_of_comics").append("<p>" + seriesInfo[i].title + "</p>")
+								}
+							}
 						})
-							
+						offset += 100;
 					}
-				})
-				offset = offset + 100;
-			}
-		}
+				}
+			})
 
-				
+		})			
 			 
 	</script>
 </body>
