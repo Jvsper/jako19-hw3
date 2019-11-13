@@ -57,7 +57,7 @@
 
 		function allChar() {
 			$.ajax({
-				url : "https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash,
+				url : "https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash + "&limit=100",
 				dataType : "json",
 				success : function (result, status){
 					console.log("https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash);
