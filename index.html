@@ -1,10 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
 	<title>Homework 3 : Jasper Kolp</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+	<!-- The following script is used for generating hash -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
 </head>
 <body>
 	<h1> Comics by Marvel Characters </h1>
 
+	<form id="comic_search" method="GET">
+		<label for="chracter">Chracter Name : <input id="character" type="text" name="character"> 
+			<input type="submit" value="Submit">
+	</form>
+
+	<div id="list_of_comics">
+		<ul>
+			
+		</ul>
+	</div>
+
+	<script>
+	// To access Marvel's Public API
+		const public_key = "74e2999625dc86ce7eb5f9dd6e589b17";
+		const private_key = "c1151fbc71cde5b20437b7c674767b779ead65ee";
+		const url ="https://gateway.marvel.com:443/v1/public/characters?"
+		var ts = Date.now();
+		var hash = CryptoJS.MD5(ts + private_key + public_key).toString();
+		
+		$("#character").on("change", function() {
+			var characterName = $("#character").val();
+			console.log(characterName);
+
+			var endpoint = url + "name=" + characterName + "&ts=" + ts + "&apikey=" + public_key + "&hash=" + hash;
+
+			console.log(endpoint);
+
+			allChar();
+
+			console.log("-----------------------------------");
+			$.ajax({
+				url : endpoint,
+				dataType : "json",
+				success : function (result, status){
+					var data = result.data.results;
+
+					console.log(data);
+	
+					
+					//$("#list_of_comics ul").append(result);
+				}
+			})
+		})
+
+		function allChar() {
+			$.ajax({
+				url : "https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash,
+				dataType : "json",
+				success : function (result, status){
+					console.log("https://gateway.marvel.com:443/v1/public/characters?ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash);
+					var characterList = result.data.results;
+
+					characterList.forEach(function(char){
+						console.log(char.name);
+					})
+				}
+
+			})
+			console.log("ALL CHARACTERS");
+		}
+
+				
+			 
+	</script>
 </body>
 </html>
