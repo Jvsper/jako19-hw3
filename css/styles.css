@@ -1,6 +1,11 @@
-h1{
-	color : black;
-}
+h1 { 
+	font-family: Marvel; 
+	font-size: 39px; 
+	font-style: normal; 
+	font-variant: normal; 
+	font-weight: bold; 
+	line-height: 39px; 
+} 
 
 body {
 	background-color : #e23636;
