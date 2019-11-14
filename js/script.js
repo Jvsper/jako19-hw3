@@ -13,7 +13,11 @@
 
 			console.log("Character Name : " + characterName);
 
-			$("#list_of_comics").append("<h3> List of series related to this character </h3>");
+			$("#list_of_comics").html("<h3> List of series related to this character </h3> \n<h4>Character Name : " + characterName + '</h4>\n\n<ul id="series-list"></ul>\n\n');
+
+			"<h4>Character Name : " + characterName + "</h4>\n\n";
+			'<ul id="series-list"></ul>\n\n';
+
 			$("#list_of_comics").append("<h4>Character Name : " + characterName + "</h4>\n\n");
 			$("#list_of_comics").append('<ul id="series-list"></ul>\n\n');
 
@@ -23,6 +27,7 @@
 				success : function(result, status){
 
 					var charID = result.data.results[0].id
+					
 
 					console.log("Character ID : " + charID);
 
@@ -58,16 +63,7 @@
 						})
 						offset += 100;
 					}
-					$.ajax({
-						url : "https://gateway.marvel.com:443/v1/public/characters/"+ charID +"&ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash,
-						dataType: "json",
-						success : function (result, status){
-							var thumbnail = result.data.results.thumbnail;
-							console.log(thumbnail);
-						}
-					})
 				}
-				
 
 			})
 		})		
