@@ -15,12 +15,6 @@
 
 			$("#list_of_comics").html("<h3> List of series related to this character </h3> \n<h4>Character Name : " + characterName + '</h4>\n\n<ul id="series-list"></ul>\n\n');
 
-			"<h4>Character Name : " + characterName + "</h4>\n\n";
-			'<ul id="series-list"></ul>\n\n';
-
-			$("#list_of_comics").append("<h4>Character Name : " + characterName + "</h4>\n\n");
-			$("#list_of_comics").append('<ul id="series-list"></ul>\n\n');
-
 			$.ajax({
 				url : "https://gateway.marvel.com:443/v1/public/characters?name=" + characterName + "&ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash,// + "&limit=" + limit + "&offset=" + offset,
 				dataType : "json",
