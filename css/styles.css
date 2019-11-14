@@ -1,5 +1,9 @@
+h1{
+	color : white;
+}
+
 body {
-	background-color : #CC4224;
+	background-color : #e23636;
 	text-align : center;
 } 
 
@@ -10,3 +14,8 @@ body {
 }
 
 
+ul {
+	padding-left : 35%;
+	padding-right : 30%;
+	text-align : left;
+}

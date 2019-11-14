@@ -40,45 +40,36 @@
 								var dataObject = result.data
 								//console.log(dataObject)
 
+								//console.log("COUNT : " + dataObject.count)
 								// Limit is 100. Need to iterate through 100 objects
-								for(var i = 0; i < 100 ; i++)
+								for(var i = 0; i < dataObject.count ; i++)
 								{	
 										if (dataObject.count != 0)
 										{
 											seriesInfo.push(dataObject.results[i] );
-											console.log("Date Object : " +  dataObject.results[i].title);
 											$("#series-list").append('<li>' + dataObject.results[i].title + '</li>')
-										} 
+										} else {
+											alert("Unable to find the character");
+											exit(); 
+										}
 								}
-
-									//var seriesInfo = result.data.results
-									//console.log(result.data);
-									
-								/*
-								for (let i = 0; i < total; i++)
-								{
-									//console.log(seriesInfo[i].title)
-									//$("#table").append('<tr><td>' + seriesInfo[i].title + '</td></tr>')
-									$("#table").append(seriesInfo[i].title + '\n')
-								}
-								*/
+								console.log(seriesInfo);
 							}
 						})
 						offset += 100;
 					}
+					$.ajax({
+						url : "https://gateway.marvel.com:443/v1/public/characters/"+ charID +"&ts=" + ts + "&apikey=74e2999625dc86ce7eb5f9dd6e589b17&hash=" + hash,
+						dataType: "json",
+						success : function (result, status){
+							var thumbnail = result.data.results.thumbnail;
+							console.log(thumbnail);
+						}
+					})
 				}
 				
 
 			})
-			/*
-				console.log(seriesInfo.length);
-
-				for(var i = 0; i < seriesInfo.length ; i++)
-				{
-					console.log(seriesInfo.length);
-				}
-				*/
-
 		})		
 
 	
